@@ -1,0 +1,10 @@
+database:
+  test:
+    connection: mongodb://127.0.0.1
+    database: test
+  development:
+    connection: mongodb://127.0.0.1
+    database: test
+  production:
+    connection: mongodb://127.0.0.1
+    database: test
