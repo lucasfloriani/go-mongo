@@ -3,12 +3,10 @@ package model
 import (
 	"github.com/go-ozzo/ozzo-validation"
 	"github.com/lucasfloriani/brazilian-ozzo-validation"
-	"gopkg.in/mgo.v2/bson"
 )
 
 type Phone struct {
-	ID     bson.ObjectId
-	Number string
+	Number string `json:"number"`
 }
 
 func (p *Phone) Validate() error {

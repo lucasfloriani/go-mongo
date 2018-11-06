@@ -2,12 +2,10 @@ package model
 
 import (
 	"github.com/go-ozzo/ozzo-validation"
-	"gopkg.in/mgo.v2/bson"
 )
 
 type Address struct {
-	ID   bson.ObjectId
-	Name string
+	Name string `json:"name"`
 }
 
 func (a *Address) Validate() error {
