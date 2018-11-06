@@ -17,5 +17,8 @@ func Setup(db *mongo.Database) *echo.Echo {
 	userDAO := dao.NewUserDAO(db)
 	handler.ServeUserResource(v1, service.NewUserService(userDAO))
 
+	courseDAO := dao.NewCourseDAO(db)
+	handler.ServeCourseResource(v1, service.NewCourseService(courseDAO))
+
 	return e
 }
