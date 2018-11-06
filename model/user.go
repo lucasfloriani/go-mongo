@@ -7,9 +7,12 @@ import (
 
 // User represents an user record.
 type User struct {
-	ID   objectid.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
-	Name string            `json:"name,omitempty"`
-	Age  uint              `json:"age,omitempty"`
+	ID      objectid.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Name    string            `json:"name,omitempty"`
+	Age     uint              `json:"age,omitempty"`
+	Address Address           `json:"address"`
+	Phones  []Phone           `json:"phones"`
+	Courses []Course          `json:"courses"`
 }
 
 // NewUser creates a new User
@@ -19,6 +22,16 @@ func NewUser() *User {
 
 // Validate validates the User fields
 func (u User) Validate() error {
+	if err := u.Address.Validate(); err != nil {
+		return err
+	}
+
+	for _, phone := range u.Phones {
+		if err := phone.Validate(); err != nil {
+			return err
+		}
+	}
+
 	return validation.ValidateStruct(&u,
 		validation.Field(
 			&u.Name,
@@ -29,6 +42,11 @@ func (u User) Validate() error {
 			&u.Age,
 			validation.Required.Error("Idade vazia."),
 			validation.Min(uint(18)).Error("Idade mínima de 18 anos."),
+		),
+		validation.Field(
+			&u.Phones,
+			validation.Required.Error("É necessário pelo menos um telefone de contato."),
+			validation.Length(1, 0).Error("É necessário pelo menos um telefone de contato."),
 		),
 	)
 }

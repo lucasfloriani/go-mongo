@@ -77,6 +77,11 @@ func (dao *UserDAO) Create(u *model.User) error {
 		bson.NewDocument(
 			bson.EC.String("name", u.Name),
 			bson.EC.Int32("age", int32(u.Age)),
+			bson.EC.SubDocumentFromElements("address",
+				bson.EC.String("name", u.Address.Name),
+			),
+			bson.EC.ArrayFromElements("phones", dao.getPhones(u)...),
+			bson.EC.ArrayFromElements("courses", dao.getCourses(u)...),
 		),
 	)
 	if err != nil {
@@ -97,6 +102,11 @@ func (dao *UserDAO) Update(u *model.User) error {
 			bson.EC.SubDocumentFromElements("$set",
 				bson.EC.String("name", u.Name),
 				bson.EC.Int32("age", int32(u.Age)),
+				bson.EC.SubDocumentFromElements("address",
+					bson.EC.String("name", u.Address.Name),
+				),
+				bson.EC.ArrayFromElements("phones", dao.getPhones(u)...),
+				bson.EC.ArrayFromElements("courses", dao.getCourses(u)...),
 			),
 		),
 	)
@@ -112,4 +122,30 @@ func (dao *UserDAO) Delete(u *model.User) error {
 		),
 	)
 	return err
+}
+
+func (dao *UserDAO) getPhones(u *model.User) (elems []*bson.Value) {
+	for _, phone := range u.Phones {
+		elems = append(elems,
+			bson.VC.DocumentFromElements(
+				bson.EC.String("number", phone.Number),
+			),
+		)
+	}
+
+	return
+}
+
+func (dao *UserDAO) getCourses(u *model.User) (elems []*bson.Value) {
+	for _, course := range u.Courses {
+		elems = append(elems,
+			bson.VC.DocumentFromElements(
+				bson.EC.ObjectID("_id", course.ID),
+				bson.EC.String("name", course.Name),
+				bson.EC.String("link", course.Link),
+			),
+		)
+	}
+
+	return
 }

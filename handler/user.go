@@ -85,8 +85,7 @@ func (r *userResource) create(c echo.Context) error {
 // update verify rest params, call service method to execute business logic
 // and return JSON data
 func (r *userResource) update(c echo.Context) error {
-	id := c.Param("userID")
-	model, err := r.service.Get(id)
+	model, err := r.service.Get(c.Param("userID"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.NewErrorResponse(err))
 	}
