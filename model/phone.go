@@ -5,10 +5,12 @@ import (
 	"github.com/lucasfloriani/brazilian-ozzo-validation"
 )
 
+// Phone represents an phone record.
 type Phone struct {
 	Number string `json:"number"`
 }
 
+// Validate validates the Phone fields
 func (p *Phone) Validate() error {
 	return validation.ValidateStruct(p,
 		validation.Field(

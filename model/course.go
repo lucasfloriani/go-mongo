@@ -6,6 +6,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson/objectid"
 )
 
+// Course represents an course record.
 type Course struct {
 	ID   objectid.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
 	Name string            `json:"name,omitempty"`
@@ -17,6 +18,7 @@ func NewCourse() *Course {
 	return &Course{}
 }
 
+// Validate validates the Course fields
 func (c Course) Validate() error {
 	return validation.ValidateStruct(&c,
 		validation.Field(
